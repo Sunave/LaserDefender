@@ -4,27 +4,33 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 
 	public float speed = 15.0f;
+	public float padding = 1f;
 
-	// Use this for initialization
+	float xMin;
+	float xMax;
+
 	void Start () {
-	
+		float distance = transform.position.z - Camera.main.transform.position.z;
+		Vector3 leftmost = Camera.main.ViewportToWorldPoint(new Vector3(0,0,distance));
+		Vector3 rightmost = Camera.main.ViewportToWorldPoint(new Vector3(1,0,distance));
+		xMin = leftmost.x + padding;
+		xMax = rightmost.x - padding;
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
 		MoveShip();
 	}
 
 	void MoveShip () {
-		Vector3 shipPos = new Vector3 (this.transform.position.x, this.transform.position.y, this.transform.position.z);
-		float movement = speed * Time.deltaTime;
-
 		if (Input.GetKey (KeyCode.LeftArrow)) {
-			shipPos.x -= movement;
+			transform.position += Vector3.left * speed * Time.deltaTime;
 		} else if (Input.GetKey (KeyCode.RightArrow)) {
-			shipPos.x += movement;
+			transform.position += Vector3.right * speed * Time.deltaTime;
 		}
 
-		this.transform.position = shipPos;
+		// Restrict the player to the game space
+		float newX = Mathf.Clamp(transform.position.x, xMin, xMax);
+		transform.position = new Vector3(newX, transform.position.y, transform.position.z);
 	}
+
 }
