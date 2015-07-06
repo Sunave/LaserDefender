@@ -48,6 +48,7 @@ public class EnemySpawner : MonoBehaviour {
 		}
 
 		// Flip the direction
-		if (transform.position.x <= xMin || transform.position.x >= xMax) movingLeft = !movingLeft;
+		if (transform.position.x <= xMin) movingLeft = false;
+		else if (transform.position.x >= xMax) movingLeft = true;
 	}
 }
