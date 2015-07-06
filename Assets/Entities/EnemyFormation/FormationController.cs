@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemySpawner : MonoBehaviour {
+public class FormationController : MonoBehaviour {
 
 	public GameObject enemyPrefab;
 
@@ -38,6 +38,17 @@ public class EnemySpawner : MonoBehaviour {
 
 	void Update () {
 		MoveFormation();
+
+		if (AllMembersDead()) SpawnEnemies();
+	}
+
+	bool AllMembersDead () {
+		foreach(Transform childPositionGameObject in transform) {
+			if (childPositionGameObject.childCount > 0) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	void MoveFormation () {
